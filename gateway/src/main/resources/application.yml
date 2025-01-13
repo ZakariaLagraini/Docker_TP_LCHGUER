@@ -1,0 +1,18 @@
+server:
+  port: 8888
+spring:
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery: Gateway
+  application:
+    name: Gateway
+
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
