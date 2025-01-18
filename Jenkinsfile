@@ -39,7 +39,7 @@ pipeline {
             }
         }
         stage('SonarQube Analysis') {
-            parallel {
+            
                 stage('SonarQube Analysis - Client') {
             steps {
                 dir('client') {
@@ -69,8 +69,7 @@ pipeline {
                         set BASH_PATH=C:\\Program Files\\Git\\bin\\bash.exe
                         \"%BASH_PATH%\" -c "mvn clean verify sonar:sonar -Dsonar.login=%SONAR_TOKEN%"
                     """
-                        }
-                    }
+                     }
                 }
             }
         }
