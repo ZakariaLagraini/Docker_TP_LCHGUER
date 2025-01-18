@@ -85,50 +85,14 @@ pipeline {
         }
 
         stage('Build Services') {
-            parallel {
-                stage('Build MySQL') {
+            
+                stage('Build services') {
                     steps {
                         script {
-                            sh 'docker-compose build mysql'
+                            sh 'docker-compose up --build'
                         }
                     }
                 }
-                stage('Build Consul') {
-                    steps {
-                        script {
-                            sh 'docker-compose build consul'
-                        }
-                    }
-                }
-                stage('Build Gateway Service') {
-                    steps {
-                        script {
-                            sh 'docker-compose build gateway-service'
-                        }
-                    }
-                }
-                stage('Build Car Service') {
-                    steps {
-                        script {
-                            sh 'docker-compose build car-service'
-                        }
-                    }
-                }
-                stage('Build Client Service') {
-                    steps {
-                        script {
-                            sh 'docker-compose build client-service'
-                        }
-                    }
-                }
-                stage('Build phpMyAdmin') {
-                    steps {
-                        script {
-                            sh 'docker-compose build phpmyadmin'
-                        }
-                    }
-                }
-            }
         }
     }
 
