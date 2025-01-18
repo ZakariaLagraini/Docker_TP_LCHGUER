@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SONARQUBE_TOKEN = 'baf6a8ce69de150b58c92cd1e679b3859688bfab' // Replace with your SonarQube token
+        SONAR_TOKEN = 'baf6a8ce69de150b58c92cd1e679b3859688bfab'
     }
 
     stages {
@@ -41,34 +41,43 @@ pipeline {
         stage('SonarQube Analysis') {
             parallel {
                 stage('SonarQube Analysis - Client') {
-            steps {
-                dir('client') {
-                    bat """
-                        set BASH_PATH=C:\\Program Files\\Git\\bin\\bash.exe
-                        \"%BASH_PATH%\" -c "mvn clean verify sonar:sonar -Dsonar.login=%SONAR_TOKEN%"
-                    """
+                    steps {
+                        dir('client') {
+                            bat """
+                                mvn clean verify sonar:sonar ^
+                                -Dsonar.projectKey=consul-micro_client ^
+                                -Dsonar.organization=consul-micro ^
+                                -Dsonar.host.url=https://sonarcloud.io ^
+                                -Dsonar.token=${SONAR_TOKEN}
+                            """
+                        }
                     }
                 }
-            }
-        
-        stage('SonarQube Analysis - Car') {
-            steps {
-                dir('car') {
-                    bat """
-                        set BASH_PATH=C:\\Program Files\\Git\\bin\\bash.exe
-                        \"%BASH_PATH%\" -c "mvn clean verify sonar:sonar -Dsonar.login=%SONAR_TOKEN%"
-                    """
+                
+                stage('SonarQube Analysis - Car') {
+                    steps {
+                        dir('car') {
+                            bat """
+                                mvn clean verify sonar:sonar ^
+                                -Dsonar.projectKey=consul-micro_car ^
+                                -Dsonar.organization=consul-micro ^
+                                -Dsonar.host.url=https://sonarcloud.io ^
+                                -Dsonar.token=${SONAR_TOKEN}
+                            """
+                        }
                     }
                 }
-            }
-
-        stage('SonarQube Analysis - Gateway') {
-            steps {
-                dir('gateway') {
-                    bat """
-                        set BASH_PATH=C:\\Program Files\\Git\\bin\\bash.exe
-                        \"%BASH_PATH%\" -c "mvn clean verify sonar:sonar -Dsonar.login=%SONAR_TOKEN%"
-                    """
+                
+                stage('SonarQube Analysis - Gateway') {
+                    steps {
+                        dir('gateway') {
+                            bat """
+                                mvn clean verify sonar:sonar ^
+                                -Dsonar.projectKey=consul-micro_gateway ^
+                                -Dsonar.organization=consul-micro ^
+                                -Dsonar.host.url=https://sonarcloud.io ^
+                                -Dsonar.token=${SONAR_TOKEN}
+                            """
                         }
                     }
                 }
