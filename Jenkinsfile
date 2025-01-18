@@ -1,32 +1,77 @@
 pipeline {
     agent any
+    tools {
+        maven 'Maven'
+    }
 
     environment {
-        SONARQUBE_URL = 'https://sonarcloud.io' // Replace with your SonarQube server URL
         SONARQUBE_TOKEN = 'baf6a8ce69de150b58c92cd1e679b3859688bfab' // Replace with your SonarQube token
     }
 
     stages {
+        stage('Git Clone') {
+            steps {
+                script {
+                    checkout([$class: 'GitSCM', branches: [[name: 'master']],
+                        userRemoteConfigs: [[url: 'https://github.com/ZakariaLagraini/Docker_TP_LCHGUER.git']]])
+                }
+            }
+        }
+
+         stage('Build Client Service') {
+            steps {
+                dir('client') {
+                    bat 'mvn clean install'
+                }
+            }
+        }
+        
+        stage('Build Car Service') {
+            steps {
+                dir('car') {
+                    bat 'mvn clean install'
+                }
+            }
+        }
+        
+        stage('Build Gateway Service') {
+            steps {
+                dir('gateway') {
+                    bat 'mvn clean install'
+                }
+            }
+        }
         stage('SonarQube Analysis') {
             parallel {
-                stage('Analyze Car Service') {
-                    steps {
-                        script {
-                            sh 'docker-compose run --rm car-service mvn verify sonar:sonar -Dsonar.projectKey=car-service -Dsonar.host.url=$SONARQUBE_URL -Dsonar.token=$SONARQUBE_TOKEN'
-                        }
+                stage('SonarQube Analysis - Client') {
+            steps {
+                dir('client') {
+                    bat """
+                        set BASH_PATH=C:\\Program Files\\Git\\bin\\bash.exe
+                        \"%BASH_PATH%\" -c "mvn clean verify sonar:sonar -Dsonar.projectKey=consul-micro_client -Dsonar.organization=consul-micro -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=%SONAR_TOKEN%"
+                    """
                     }
                 }
-                stage('Analyze Client Service') {
-                    steps {
-                        script {
-                            sh 'docker-compose run --rm client-service mvn verify sonar:sonar -Dsonar.projectKey=client-service -Dsonar.host.url=$SONARQUBE_URL -Dsonar.token=$SONARQUBE_TOKEN'
-                        }
+            }
+        
+        stage('SonarQube Analysis - Car') {
+            steps {
+                dir('car') {
+                    bat """
+                        set BASH_PATH=C:\\Program Files\\Git\\bin\\bash.exe
+                        \"%BASH_PATH%\" -c "mvn clean verify sonar:sonar -Dsonar.projectKey=consul-micro_car -Dsonar.organization=consul-micro -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=%SONAR_TOKEN%"
+                    """
                     }
                 }
-                stage('Analyze Gateway Service') {
-                    steps {
-                        script {
-                            sh 'docker-compose run --rm gateway-service mvn verify sonar:sonar -Dsonar.projectKey=gateway-service -Dsonar.host.url=$SONARQUBE_URL -Dsonar.token=$SONARQUBE_TOKEN'
+            }
+
+        stage('SonarQube Analysis - Gateway') {
+            steps {
+                dir('gateway') {
+                    bat """
+                        set BASH_PATH=C:\\Program Files\\Git\\bin\\bash.exe
+                        \"%BASH_PATH%\" -c "mvn clean verify sonar:sonar -Dsonar.projectKey=consul-micro_gateway -Dsonar.organization=consul-micro -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=%SONAR_TOKEN%"
+                    """
                         }
                     }
                 }
