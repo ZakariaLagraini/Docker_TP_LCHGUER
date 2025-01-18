@@ -84,15 +84,12 @@ pipeline {
             }
         }
 
-        stage('Build Services') {
-            
-                stage('Build services') {
-                    steps {
-                        script {
-                            sh 'docker-compose up --build'
-                        }
-                    }
+        sstage('Build Services') {
+            steps {
+                script {
+                    sh 'docker-compose up --build'
                 }
+            }
         }
     }
 
