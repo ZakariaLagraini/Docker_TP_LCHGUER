@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    tools {
-        maven 'Maven'
-    }
 
     environment {
         SONARQUBE_TOKEN = 'baf6a8ce69de150b58c92cd1e679b3859688bfab' // Replace with your SonarQube token
