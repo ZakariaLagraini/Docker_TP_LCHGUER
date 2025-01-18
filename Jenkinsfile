@@ -45,7 +45,7 @@ pipeline {
                 dir('client') {
                     bat """
                         set BASH_PATH=C:\\Program Files\\Git\\bin\\bash.exe
-                        \"%BASH_PATH%\" -c "mvn clean verify sonar:sonar -Dsonar.projectKey=consul-micro_client -Dsonar.organization=consul-micro -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=%SONAR_TOKEN%"
+                        \"%BASH_PATH%\" -c "mvn clean verify sonar:sonar -Dsonar.login=%SONAR_TOKEN%"
                     """
                     }
                 }
@@ -56,7 +56,7 @@ pipeline {
                 dir('car') {
                     bat """
                         set BASH_PATH=C:\\Program Files\\Git\\bin\\bash.exe
-                        \"%BASH_PATH%\" -c "mvn clean verify sonar:sonar -Dsonar.projectKey=consul-micro_car -Dsonar.organization=consul-micro -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=%SONAR_TOKEN%"
+                        \"%BASH_PATH%\" -c "mvn clean verify sonar:sonar -Dsonar.login=%SONAR_TOKEN%"
                     """
                     }
                 }
@@ -67,7 +67,7 @@ pipeline {
                 dir('gateway') {
                     bat """
                         set BASH_PATH=C:\\Program Files\\Git\\bin\\bash.exe
-                        \"%BASH_PATH%\" -c "mvn clean verify sonar:sonar -Dsonar.projectKey=consul-micro_gateway -Dsonar.organization=consul-micro -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=%SONAR_TOKEN%"
+                        \"%BASH_PATH%\" -c "mvn clean verify sonar:sonar -Dsonar.login=%SONAR_TOKEN%"
                     """
                         }
                     }
